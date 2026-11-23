@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { ActivityIndicator, ScrollView, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
+import { ActivityIndicator, Image, ScrollView, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useApp } from '../contexto';
 import { listarFilmes } from '../api';
@@ -33,7 +33,7 @@ export default function Inicio() {
 
   const generos = useMemo(() => ['Todos', ...new Set(filmes.map((f) => f.genero))], [filmes]);
   const lista = genero === 'Todos' ? filmes : filmes.filter((f) => f.genero === genero);
-  const destaque = filmes[0];
+  const destaque = filmes.find((f) => f.bannerUrl) || filmes[0];
 
   const largo = width >= 800;
   const colunas = width >= 1100 ? 5 : width >= 800 ? 4 : width >= 560 ? 3 : 2;
@@ -71,7 +71,20 @@ export default function Inicio() {
                 end={{ x: 1, y: 1 }}
                 style={StyleSheet.absoluteFill}
               />
-              <LinearGradient colors={['rgba(12,10,11,0)', 'rgba(12,10,11,0.92)']} style={StyleSheet.absoluteFill} />
+              {(destaque.bannerUrl || destaque.posterUrl) && (
+                <Image
+                  source={{ uri: destaque.bannerUrl || destaque.posterUrl }}
+                  resizeMode="cover"
+                  style={StyleSheet.absoluteFill}
+                  accessibilityLabel={`Imagem do filme ${destaque.titulo}`}
+                />
+              )}
+              <LinearGradient
+                colors={largo ? ['rgba(8,7,11,0.96)', 'rgba(8,7,11,0.63)', 'rgba(8,7,11,0.1)'] : ['rgba(8,7,11,0.40)', 'rgba(8,7,11,0.94)']}
+                start={{ x: 0, y: largo ? 0.5 : 0 }}
+                end={{ x: largo ? 1 : 0, y: 1 }}
+                style={StyleSheet.absoluteFill}
+              />
               <View style={[estilos.heroTexto, { maxWidth: largo ? 560 : '100%' }]}>
                 <Text style={estilos.heroEtiqueta}>EM DESTAQUE</Text>
                 <Text style={[estilos.heroTitulo, { fontSize: largo ? 52 : 36, lineHeight: largo ? 58 : 40 }]}>
@@ -93,7 +106,7 @@ export default function Inicio() {
           </Entrada>
         )}
 
-        <Text style={estilos.secao}>Em cartaz</Text>
+        <Text style={estilos.secao}>Catálogo de filmes</Text>
 
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={estilos.chips}>
           {generos.map((g) => (
@@ -118,6 +131,7 @@ export default function Inicio() {
             />
           ))}
         </View>
+        <Text style={estilos.aviso}>Seleção de filmes reais · Sessões e preços demonstrativos. Imagens: TMDB.</Text>
       </View>
     </ScrollView>
   );
@@ -149,4 +163,5 @@ const estilos = StyleSheet.create({
   chipTexto: { color: cores.suave, fontSize: 13, fontWeight: '600' },
   chipTextoAtivo: { color: cores.ouroEscuro },
   grade: { flexDirection: 'row', flexWrap: 'wrap' },
+  aviso: { color: cores.suave, fontSize: 11, marginTop: 28, opacity: 0.8 },
 });
