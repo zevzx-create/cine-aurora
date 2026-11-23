@@ -5,7 +5,7 @@ import Toque from './Toque';
 import { cores, serifa } from '../tema';
 
 export default function Cabecalho() {
-  const { usuario, podeVoltar, voltar, raiz, navegar, sair, topo } = useApp();
+  const { usuario, podeVoltar, voltar, raiz, navegar, topo } = useApp();
 
   const abrirIngressos = () => {
     if (usuario) raiz('Pedidos');
@@ -22,7 +22,7 @@ export default function Cabecalho() {
         )}
         <Toque aoPressionar={() => raiz('Inicio')} escalaPressionado={0.97}>
           <Text style={estilos.logo}>
-            CINE<Text style={estilos.logoOuro}> AURORA</Text>
+            CINE<Text style={estilos.logoOuro}> AURA</Text>
           </Text>
         </Toque>
       </View>
@@ -35,8 +35,8 @@ export default function Cabecalho() {
           <Text style={[estilos.linkTexto, topo === 'Pedidos' && estilos.linkAtivo]}>Ingressos</Text>
         </Toque>
         {usuario ? (
-          <Toque aoPressionar={sair} style={estilos.conta}>
-            <Text style={estilos.contaTexto}>{usuario.nome.split(' ')[0]} · Sair</Text>
+          <Toque aoPressionar={() => navegar('Conta')} style={estilos.conta}>
+            <Text style={estilos.contaTexto}>{usuario.nome.split(' ')[0]} · Minha conta</Text>
           </Toque>
         ) : (
           <Toque aoPressionar={() => navegar('Login', { retorno: false })} style={estilos.conta}>

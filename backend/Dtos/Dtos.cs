@@ -2,6 +2,7 @@ namespace Cinema.Api.Dtos;
 
 public record Registro(string Nome, string Email, string Senha);
 public record Credenciais(string Email, string Senha);
+public record ExcluirContaDados(string Senha);
 public record UsuarioDto(int Id, string Nome, string Email);
 public record AuthResposta(string Token, UsuarioDto Usuario);
 

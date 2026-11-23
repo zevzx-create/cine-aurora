@@ -1,6 +1,6 @@
-# Cine Aurora — filmes reais e pôsteres
+# Cine Aura — filmes reais e pôsteres
 
-Sistema demonstrativo de venda de ingressos: React Native + Expo, API em C#/.NET 8 e banco MySQL.
+**Nome público: Cine Aura.** Sistema demonstrativo de venda de ingressos: React Native + Expo, API em C#/.NET 8 e banco MySQL.
 
 ## ATUALIZAÇÃO NO SEU SITE PUBLICADO
 
@@ -29,3 +29,14 @@ Sistema demonstrativo de venda de ingressos: React Native + Expo, API em C#/.NET
 
 Crédito: This product uses the TMDB API but is not endorsed or certified by TMDB.
 Imagens e marcas dos filmes pertencem aos respectivos titulares.
+
+## Minha conta e exclusão
+- Usuários autenticados acessam **Minha conta** no cabeçalho.
+- **Excluir conta** exige a senha e uma confirmação explícita.
+- A API `DELETE /api/auth/conta` utiliza o JWT para identificar o titular e verifica a senha BCrypt.
+- A exclusão é definitiva: remove o usuário, seus pedidos e ingressos vinculados, em transação. Filmes, sessões e pedidos de outras contas são preservados.
+- Após a exclusão, o aplicativo limpa a sessão local e retorna à página inicial.
+- Não é necessária migração adicional no MySQL.
+
+## Nome público e serviços
+O nome mostrado no aplicativo e os metadados do Expo são **Cine Aura**. Os identificadores técnicos existentes (namespace `Cinema.Api`, schema MySQL `railway`, nomes internos e URLs já implantadas) são mantidos para preservar as conexões. Para trocar o endereço `cine-aurorazz.netlify.app` ou nomes de serviços no Railway/GitHub, ajuste-os nos respectivos painéis e confira os vínculos de deploy.
