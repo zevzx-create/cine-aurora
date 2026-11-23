@@ -4,6 +4,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import Entrada from './Entrada';
 import { cores, serifa } from '../tema';
 import { duracao, nativo } from '../utils';
+import { imagemFilme } from '../imagensFilmes';
 
 export default function Poster({ filme, largura, atraso = 0, aoPressionar }) {
   const escala = useRef(new Animated.Value(1)).current;
@@ -42,11 +43,11 @@ export default function Poster({ filme, largura, atraso = 0, aoPressionar }) {
               },
             ]}
           />
-          {filme.posterUrl && (
+          {imagemFilme(filme) && (
             <Image
-              source={{ uri: filme.posterUrl }}
+              source={{ uri: imagemFilme(filme) }}
               resizeMode="cover"
-              style={StyleSheet.absoluteFill}
+              style={estilos.imagemFundo}
               accessibilityLabel={`Pôster de ${filme.titulo}`}
             />
           )}
@@ -80,6 +81,7 @@ const estilos = StyleSheet.create({
     padding: 14,
   },
   circulo: { position: 'absolute', backgroundColor: 'rgba(255,255,255,0.09)' },
+  imagemFundo: { position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' },
   sombra: { ...StyleSheet.absoluteFillObject },
   topo: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' },
   genero: { color: 'rgba(255,255,255,0.8)', fontSize: 10, fontWeight: '700', letterSpacing: 1.6 },
