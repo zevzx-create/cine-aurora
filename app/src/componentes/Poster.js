@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { Animated, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Animated, Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Entrada from './Entrada';
 import { cores, serifa } from '../tema';
@@ -42,7 +42,15 @@ export default function Poster({ filme, largura, atraso = 0, aoPressionar }) {
               },
             ]}
           />
-          <LinearGradient colors={['rgba(0,0,0,0)', 'rgba(0,0,0,0.82)']} style={estilos.sombra} />
+          {filme.posterUrl && (
+            <Image
+              source={{ uri: filme.posterUrl }}
+              resizeMode="cover"
+              style={StyleSheet.absoluteFill}
+              accessibilityLabel={`Pôster de ${filme.titulo}`}
+            />
+          )}
+          <LinearGradient colors={['rgba(0,0,0,0.1)', 'rgba(0,0,0,0.04)', 'rgba(0,0,0,0.92)']} style={estilos.sombra} />
 
           <View style={estilos.topo}>
             <Text style={estilos.genero}>{filme.genero.toUpperCase()}</Text>
@@ -72,7 +80,7 @@ const estilos = StyleSheet.create({
     padding: 14,
   },
   circulo: { position: 'absolute', backgroundColor: 'rgba(255,255,255,0.09)' },
-  sombra: { position: 'absolute', left: 0, right: 0, bottom: 0, height: '60%' },
+  sombra: { ...StyleSheet.absoluteFillObject },
   topo: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' },
   genero: { color: 'rgba(255,255,255,0.8)', fontSize: 10, fontWeight: '700', letterSpacing: 1.6 },
   nota: { backgroundColor: 'rgba(0,0,0,0.45)', borderRadius: 8, paddingHorizontal: 8, paddingVertical: 3 },
