@@ -4,7 +4,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import Entrada from './Entrada';
 import { cores, serifa } from '../tema';
 import { duracao, nativo } from '../utils';
-import { imagemFilme, estaEmBreve } from '../imagensFilmes';
+import { imagemFilme, estaEmBreve, emPreVenda } from '../imagensFilmes';
 
 export default function Poster({ filme, largura, atraso = 0, aoPressionar }) {
   const escala = useRef(new Animated.Value(1)).current;
@@ -57,7 +57,7 @@ export default function Poster({ filme, largura, atraso = 0, aoPressionar }) {
             <Text style={estilos.genero}>{filme.genero.toUpperCase()}</Text>
             <View style={estilos.nota}>
               <Text style={estilos.notaTexto}>
-                {estaEmBreve(filme) ? 'EM BREVE' : Number(filme.nota) > 0 ? `★ ${Number(filme.nota).toFixed(1)}` : filme.ano}
+                {emPreVenda(filme) ? 'PRÉ-VENDA' : estaEmBreve(filme) ? 'EM BREVE' : Number(filme.nota) > 0 ? `★ ${Number(filme.nota).toFixed(1)}` : filme.ano}
               </Text>
             </View>
           </View>
