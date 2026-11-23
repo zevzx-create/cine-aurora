@@ -1,11 +1,12 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import { useApp } from '../contexto';
 import Toque from './Toque';
 import { cores, serifa } from '../tema';
 
 export default function Cabecalho() {
   const { usuario, podeVoltar, voltar, raiz, navegar, topo } = useApp();
+  const { width } = useWindowDimensions();
 
   const abrirIngressos = () => {
     if (usuario) raiz('Pedidos');
@@ -34,7 +35,7 @@ export default function Cabecalho() {
         <Toque aoPressionar={abrirIngressos} style={estilos.link}>
           <Text style={[estilos.linkTexto, topo === 'Pedidos' && estilos.linkAtivo]}>Ingressos</Text>
         </Toque>
-        {usuario?.isAdmin && (
+        {usuario?.isAdmin && width >= 800 && (
           <Toque aoPressionar={() => raiz('Dashboard')} style={estilos.link}>
             <Text style={[estilos.linkTexto, topo === 'Dashboard' && estilos.linkAtivo]}>Painel</Text>
           </Toque>
