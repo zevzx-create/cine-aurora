@@ -27,7 +27,13 @@ async function chamar(caminho, { metodo = 'GET', corpo } = {}) {
   } catch {}
 
   if (!resposta.ok) {
-    throw new Error((dados && dados.erro) || 'Algo deu errado. Tente novamente.');
+    const mensagem = dados?.erro
+      || (resposta.status === 401
+        ? 'Sua sessão expirou. Saia e entre novamente.'
+        : resposta.status === 404
+          ? 'Rota não encontrada na API. Confira o último deploy do Railway.'
+          : `Erro HTTP ${resposta.status}. Confira os logs no Railway.`);
+    throw new Error(mensagem);
   }
   return dados;
 }
@@ -40,4 +46,4 @@ export const login = (corpo) => chamar('/api/auth/entrar', { metodo: 'POST', cor
 export const cadastrar = (corpo) => chamar('/api/auth/registrar', { metodo: 'POST', corpo });
 export const criarPedido = (corpo) => chamar('/api/pedidos', { metodo: 'POST', corpo });
 export const meusPedidos = () => chamar('/api/pedidos/meus');
-export const excluirConta = (senha) => chamar('/api/auth/conta', { metodo: 'DELETE', corpo: { senha } });
+export const excluirConta = (senha) => chamar('/api/auth/excluir-conta', { metodo: 'POST', corpo: { senha } });
