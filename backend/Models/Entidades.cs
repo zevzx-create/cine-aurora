@@ -25,6 +25,8 @@ public class Filme
     public string CorPrimaria { get; set; } = "";
     public string CorSecundaria { get; set; } = "";
     public bool EmCartaz { get; set; }
+    public string? PosterUrl { get; set; }
+    public string? BannerUrl { get; set; }
     [JsonIgnore] public List<Sessao> Sessoes { get; set; } = new();
 }
 

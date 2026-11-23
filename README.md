@@ -1,19 +1,31 @@
-# Cine Aurora
+# Cine Aurora — filmes reais e pôsteres
 
-Sistema de venda de ingressos de cinema.
+Sistema demonstrativo de venda de ingressos: React Native + Expo, API em C#/.NET 8 e banco MySQL.
 
-- `database/cinema.sql`: script do MySQL local (tabelas e dados iniciais)
-- `database/cinema-hospedagem.sql`: mesmo script, sem criar o banco, para MySQL hospedado
-- `backend/`: API em C# (.NET 8, ASP.NET Core, Entity Framework Core, JWT)
-- `app/`: front-end em React Native (Expo), roda no navegador e no celular
+## ATUALIZAÇÃO NO SEU SITE PUBLICADO
 
-## Como rodar localmente
+**Antes de mesclar esta atualização no GitHub:**
 
-1. MySQL: execute `database/cinema.sql` no MySQL Workbench.
-2. API: em `backend/`, ajuste a senha em `appsettings.json` e rode `dotnet run`. Swagger em http://localhost:5080/swagger
-3. App: em `app/`, rode `npm install` e depois `npx expo start --web`.
+1. Conecte-se ao banco Railway pelo MySQL Workbench e dê dois cliques no schema `railway`.
+2. Abra `database/ATUALIZAR-BANCO-FILMES-REAIS.sql` em **File > Open SQL Script**.
+3. Execute o arquivo inteiro clicando no ícone do raio. O SELECT final deve mostrar oito filmes reais.
+4. Só depois mescle o pull request `filmes-reais-e-posters` para `main`.
+5. Railway e Netlify receberão os arquivos novos automaticamente se os deploys automáticos estiverem habilitados.
+6. Confira a API em `https://cine-aurora-production.up.railway.app/api/filmes` e o site em `https://cine-aurorazz.netlify.app/`.
 
-## Como publicar
+**Não execute novamente o arquivo `cinema-hospedagem.sql` no banco existente**, pois ele é de instalação inicial. O script `ATUALIZAR-BANCO-FILMES-REAIS.sql` mantém usuários, pedidos, ingressos e as sessões antigas para preservar históricos.
 
-- API: `backend/Dockerfile`, variáveis `ConnectionStrings__Cinema` e `Jwt__Chave`.
-- Site: em `app/`, `EXPO_PUBLIC_API_URL=https://URL-DA-API npx expo export --platform web` e publicar a pasta `dist`.
+### Arquivos importantes
+- `database/ATUALIZAR-BANCO-FILMES-REAIS.sql` — atualização segura do MySQL existente.
+- `database/cinema.sql` — instalação de um banco novo local (apaga o banco `cinema`).
+- `database/cinema-hospedagem.sql` — instalação em banco novo hospedado.
+- `backend/` — API C# (.NET 8, ASP.NET Core e JWT).
+- `app/` — React Native + Expo para web e celular.
+
+### Observações
+- Os oito títulos são filmes reais. As notas, sessões e preços são **ilustrativos** e não representam a programação oficial de cinemas.
+- Imagens carregadas de `image.tmdb.org` e exibidas com fallback de cor.
+- As chaves do Railway devem permanecer apenas nas variáveis de ambiente.
+
+Crédito: This product uses the TMDB API but is not endorsed or certified by TMDB.
+Imagens e marcas dos filmes pertencem aos respectivos titulares.

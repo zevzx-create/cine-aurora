@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { ActivityIndicator, ScrollView, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
+import { ActivityIndicator, Image, ScrollView, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useApp } from '../contexto';
 import { obterFilme, sessoesDoFilme } from '../api';
@@ -68,7 +68,18 @@ export default function Filme({ id }) {
               end={{ x: 1, y: 1 }}
               style={StyleSheet.absoluteFill}
             />
-            <LinearGradient colors={['rgba(12,10,11,0)', 'rgba(12,10,11,0.9)']} style={StyleSheet.absoluteFill} />
+            {(filme.bannerUrl || filme.posterUrl) && (
+              <Image
+                source={{ uri: filme.bannerUrl || filme.posterUrl }}
+                resizeMode="cover"
+                style={StyleSheet.absoluteFill}
+                accessibilityLabel={`Imagem do filme ${filme.titulo}`}
+              />
+            )}
+            <LinearGradient
+              colors={['rgba(12,10,11,0.10)', 'rgba(12,10,11,0.72)', 'rgba(12,10,11,0.97)']}
+              style={StyleSheet.absoluteFill}
+            />
             <View style={estilos.linhaBadge}>
               <View style={[estilos.classificacao, { backgroundColor: coresClassificacao[filme.classificacao] || '#333' }]}>
                 <Text style={estilos.classificacaoTexto}>{filme.classificacao}</Text>
@@ -88,7 +99,8 @@ export default function Filme({ id }) {
           <Text style={estilos.sinopse}>{filme.sinopse}</Text>
         </Entrada>
 
-        <Text style={estilos.secao}>Sessões</Text>
+        <Text style={estilos.secao}>Sessões demonstrativas</Text>
+        <Text style={estilos.notaDemo}>Datas e preços ilustrativos para testar o sistema. Não são sessões reais.</Text>
 
         {dias.length === 0 ? (
           <Text style={estilos.vazio}>Nenhuma sessão disponível no momento.</Text>
@@ -149,6 +161,7 @@ const estilos = StyleSheet.create({
   sinopse: { color: cores.suave, fontSize: 16, lineHeight: 25, marginTop: 22, maxWidth: 720 },
   secao: { color: cores.texto, fontFamily: serifa, fontSize: 26, fontWeight: '700', marginTop: 36, marginBottom: 14 },
   vazio: { color: cores.suave, fontSize: 15 },
+  notaDemo: { color: cores.suave, fontSize: 12, marginBottom: 14 },
   dias: { gap: 10, paddingBottom: 18 },
   dia: {
     width: 64,
