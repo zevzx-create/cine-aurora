@@ -9,7 +9,7 @@ import Entrada from '../componentes/Entrada';
 import Toque from '../componentes/Toque';
 import { cores, serifa } from '../tema';
 import { duracao } from '../utils';
-import { imagemFilme, estaEmBreve } from '../imagensFilmes';
+import { imagemFilme, estaEmBreve, emPreVenda } from '../imagensFilmes';
 
 export default function Inicio() {
   const { navegar } = useApp();
@@ -87,7 +87,7 @@ export default function Inicio() {
                 style={StyleSheet.absoluteFill}
               />
               <View style={[estilos.heroTexto, { maxWidth: largo ? 560 : '100%' }]}>
-                <Text style={estilos.heroEtiqueta}>{estaEmBreve(destaque) ? 'EM BREVE' : 'EM DESTAQUE'}</Text>
+                <Text style={estilos.heroEtiqueta}>{emPreVenda(destaque) ? 'PRÉ-VENDA' : estaEmBreve(destaque) ? 'EM BREVE' : 'EM DESTAQUE'}</Text>
                 <Text style={[estilos.heroTitulo, { fontSize: largo ? 52 : 36, lineHeight: largo ? 58 : 40 }]}>
                   {destaque.titulo}
                 </Text>
@@ -98,7 +98,7 @@ export default function Inicio() {
                   {destaque.sinopse}
                 </Text>
                 <Botao
-                  titulo={estaEmBreve(destaque) ? 'Ver detalhes' : 'Comprar ingresso'}
+                  titulo={emPreVenda(destaque) ? 'Comprar na pré-venda' : estaEmBreve(destaque) ? 'Ver detalhes' : 'Comprar ingresso'}
                   aoPressionar={() => navegar('Filme', { id: destaque.id })}
                   style={{ alignSelf: 'flex-start', marginTop: 8 }}
                 />

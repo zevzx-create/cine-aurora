@@ -21,7 +21,7 @@ database/     Scripts SQL
 
 ### Banco de dados
 
-Para uma instalação nova, execute `database/cinema-hospedagem.sql` no banco MySQL selecionado. Para atualizar o catálogo do banco já publicado, execute `database/ATUALIZAR-CATALOGO-2026.sql`. Não execute o script de instalação inicial sobre um banco com dados existentes.
+Para uma instalação nova, execute `database/cinema-hospedagem.sql` no banco MySQL selecionado. Para atualizar o catálogo do banco já publicado, execute `database/ATUALIZAR-CATALOGO-2026.sql`. Para ativar sessões de pré-venda e deixar os nove filmes em cartaz, execute depois `database/ATUALIZAR-PRE-VENDA-FINAL.sql` no MySQL Workbench. Não execute o script de instalação inicial sobre um banco com dados existentes.
 
 ### API
 

@@ -44,6 +44,17 @@ const estreias = {
   'Jumanji: Open World': '2026-12-24',
 };
 
+const titulosPreVenda = new Set([
+  'As Novas Desventuras de Cliff Booth',
+  'Duna: Parte Três',
+  'Vingadores: Doomsday',
+  'Jumanji: Open World',
+]);
+
+export function emPreVenda(filme) {
+  return !!filme && titulosPreVenda.has(filme.titulo);
+}
+
 export function estaEmBreve(filme) {
   const estreia = filme && estreias[filme.titulo];
   if (!estreia) return false;

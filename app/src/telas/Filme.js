@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, Image, ScrollView, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { imagemFilme, estaEmBreve } from '../imagensFilmes';
+import { imagemFilme, estaEmBreve, emPreVenda } from '../imagensFilmes';
 import { useApp } from '../contexto';
 import { obterFilme, sessoesDoFilme } from '../api';
 import Entrada from '../componentes/Entrada';
@@ -93,7 +93,7 @@ export default function Filme({ id }) {
             <Text style={estilos.meta}>
               {filme.duracaoMin > 0 ? duracao(filme.duracaoMin) : 'Duração a definir'}
               {Number(filme.nota) > 0 ? `  ·  ★ ${Number(filme.nota).toFixed(1)}` : ''}
-              {estaEmBreve(filme) ? '  ·  Em breve' : ''}
+              {emPreVenda(filme) ? '  ·  Pré-venda' : estaEmBreve(filme) ? '  ·  Em breve' : ''}
             </Text>
           </View>
         </Entrada>
@@ -105,7 +105,7 @@ export default function Filme({ id }) {
         <Text style={estilos.secao}>Sessões</Text>
 
         {dias.length === 0 ? (
-          <Text style={estilos.vazio}>{estaEmBreve(filme) ? 'Estreia em breve. Sessões ainda não disponíveis.' : 'Nenhuma sessão disponível no momento.'}</Text>
+          <Text style={estilos.vazio}>{emPreVenda(filme) ? 'Sessões de pré-venda indisponíveis no momento.' : estaEmBreve(filme) ? 'Estreia em breve. Sessões ainda não disponíveis.' : 'Nenhuma sessão disponível no momento.'}</Text>
         ) : (
           <>
             <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={estilos.dias}>
