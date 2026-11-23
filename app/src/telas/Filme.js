@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, Image, ScrollView, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { imagemFilme } from '../imagensFilmes';
 import { useApp } from '../contexto';
 import { obterFilme, sessoesDoFilme } from '../api';
 import Entrada from '../componentes/Entrada';
@@ -68,11 +69,11 @@ export default function Filme({ id }) {
               end={{ x: 1, y: 1 }}
               style={StyleSheet.absoluteFill}
             />
-            {(filme.bannerUrl || filme.posterUrl) && (
+            {imagemFilme(filme, 'banner') && (
               <Image
-                source={{ uri: filme.bannerUrl || filme.posterUrl }}
+                source={{ uri: imagemFilme(filme, 'banner') }}
                 resizeMode="cover"
-                style={StyleSheet.absoluteFill}
+                style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
                 accessibilityLabel={`Imagem do filme ${filme.titulo}`}
               />
             )}
