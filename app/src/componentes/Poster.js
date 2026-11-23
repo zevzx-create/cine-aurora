@@ -51,7 +51,7 @@ export default function Poster({ filme, largura, atraso = 0, aoPressionar }) {
               accessibilityLabel={`Pôster de ${filme.titulo}`}
             />
           )}
-          <LinearGradient colors={['rgba(0,0,0,0.1)', 'rgba(0,0,0,0.04)', 'rgba(0,0,0,0.92)']} style={estilos.sombra} />
+          <LinearGradient colors={['rgba(0,0,0,0.12)', 'rgba(0,0,0,0.14)', 'rgba(0,0,0,0.95)']} style={estilos.sombra} />
 
           <View style={estilos.topo}>
             <Text style={estilos.genero}>{filme.genero.toUpperCase()}</Text>
@@ -89,7 +89,14 @@ const estilos = StyleSheet.create({
   genero: { color: 'rgba(255,255,255,0.8)', fontSize: 10, fontWeight: '700', letterSpacing: 1.6 },
   nota: { backgroundColor: 'rgba(0,0,0,0.45)', borderRadius: 8, paddingHorizontal: 8, paddingVertical: 3 },
   notaTexto: { color: cores.ouro, fontSize: 11, fontWeight: '700' },
-  base: { gap: 4 },
-  titulo: { color: cores.texto, fontFamily: serifa, fontWeight: '700' },
-  meta: { color: 'rgba(255,255,255,0.65)', fontSize: 11, letterSpacing: 0.4 },
+  base: {
+    gap: 4,
+    backgroundColor: 'rgba(0, 0, 0, 0.79)',
+    borderRadius: 9,
+    padding: 8,
+    marginHorizontal: -7,
+    marginBottom: -7,
+  },
+  titulo: { color: '#ffffff', fontFamily: serifa, fontWeight: '700', textShadowColor: 'rgba(0,0,0,0.8)', textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 3 },
+  meta: { color: 'rgba(255,255,255,0.84)', fontSize: 11, letterSpacing: 0.4 },
 });
