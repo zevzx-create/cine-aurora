@@ -2,6 +2,7 @@ using Cinema.Api.Data;
 using Cinema.Api.Dtos;
 using Cinema.Api.Models;
 using Cinema.Api.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -52,6 +53,42 @@ public class AuthController(CinemaContext db, TokenService tokens) : ControllerB
             return Unauthorized(new { erro = "E-mail ou senha incorretos." });
 
         return Ok(Resposta(usuario));
+    }
+
+    // Exclui apenas a conta vinculada ao token autenticado, após confirmação de senha.
+    // As exclusões são feitas em uma transação para não deixar dados órfãos.
+    [Authorize]
+    [HttpDelete("conta")]
+    public async Task<IActionResult> ExcluirConta(ExcluirContaDados dados)
+    {
+        var identificador = User.FindFirst("id")?.Value;
+        if (!int.TryParse(identificador, out var usuarioId))
+            return Unauthorized(new { erro = "Sessão inválida. Entre novamente." });
+
+        if (string.IsNullOrWhiteSpace(dados.Senha))
+            return BadRequest(new { erro = "Informe sua senha para excluir a conta." });
+
+        var usuario = await db.Usuarios.FirstOrDefaultAsync(u => u.Id == usuarioId);
+        if (usuario is null)
+            return Unauthorized(new { erro = "Conta não encontrada." });
+
+        if (!BCrypt.Net.BCrypt.Verify(dados.Senha, usuario.SenhaHash))
+            return BadRequest(new { erro = "Senha incorreta. Sua conta não foi excluída." });
+
+        await using var transacao = await db.Database.BeginTransactionAsync();
+        var pedidosIds = await db.Pedidos
+            .Where(p => p.UsuarioId == usuarioId)
+            .Select(p => p.Id)
+            .ToListAsync();
+
+        if (pedidosIds.Count > 0)
+            await db.Ingressos.Where(i => pedidosIds.Contains(i.PedidoId)).ExecuteDeleteAsync();
+
+        await db.Pedidos.Where(p => p.UsuarioId == usuarioId).ExecuteDeleteAsync();
+        await db.Usuarios.Where(u => u.Id == usuarioId).ExecuteDeleteAsync();
+        await transacao.CommitAsync();
+
+        return NoContent();
     }
 
     private AuthResposta Resposta(Usuario usuario) =>
