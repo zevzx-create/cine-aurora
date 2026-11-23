@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, Image, ScrollView, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { imagemFilme } from '../imagensFilmes';
+import { imagemFilme, estaEmBreve } from '../imagensFilmes';
 import { useApp } from '../contexto';
 import { obterFilme, sessoesDoFilme } from '../api';
 import Entrada from '../componentes/Entrada';
@@ -83,7 +83,7 @@ export default function Filme({ id }) {
             />
             <View style={estilos.linhaBadge}>
               <View style={[estilos.classificacao, { backgroundColor: coresClassificacao[filme.classificacao] || '#333' }]}>
-                <Text style={estilos.classificacaoTexto}>{filme.classificacao}</Text>
+                <Text style={estilos.classificacaoTexto}>{filme.classificacao === 'A' ? '?' : filme.classificacao}</Text>
               </View>
               <Text style={estilos.genero}>
                 {filme.genero.toUpperCase()} · {filme.ano}
@@ -91,7 +91,9 @@ export default function Filme({ id }) {
             </View>
             <Text style={[estilos.titulo, { fontSize: largo ? 50 : 34, lineHeight: largo ? 56 : 38 }]}>{filme.titulo}</Text>
             <Text style={estilos.meta}>
-              {duracao(filme.duracaoMin)}  ·  ★ {Number(filme.nota).toFixed(1)}
+              {filme.duracaoMin > 0 ? duracao(filme.duracaoMin) : 'Duração a definir'}
+              {Number(filme.nota) > 0 ? `  ·  ★ ${Number(filme.nota).toFixed(1)}` : ''}
+              {estaEmBreve(filme) ? '  ·  Em breve' : ''}
             </Text>
           </View>
         </Entrada>
@@ -103,7 +105,7 @@ export default function Filme({ id }) {
         <Text style={estilos.secao}>Sessões</Text>
 
         {dias.length === 0 ? (
-          <Text style={estilos.vazio}>Nenhuma sessão disponível no momento.</Text>
+          <Text style={estilos.vazio}>{estaEmBreve(filme) ? 'Estreia em breve. Sessões ainda não disponíveis.' : 'Nenhuma sessão disponível no momento.'}</Text>
         ) : (
           <>
             <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={estilos.dias}>

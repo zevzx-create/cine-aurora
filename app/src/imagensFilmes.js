@@ -1,40 +1,61 @@
-const filmes = {
-  'Interstellar': {
-    poster: 'https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg',
-    banner: 'https://image.tmdb.org/t/p/original/xJHokMbljvjADYdit5fK5VQsXEG.jpg',
+const imagens = {
+  'Eu Sou o Rocky': {
+    poster: 'https://ingresso-a.akamaihd.net/prd/img/movie/eu-sou-o-rocky/c5f58ee4-13d7-4e64-8659-4e0cb7952cfc.webp',
+    banner: 'https://ingresso-a.akamaihd.net/prd/img/movie/eu-sou-o-rocky/c5f58ee4-13d7-4e64-8659-4e0cb7952cfc.webp',
   },
-  'Duna: Parte Dois': {
-    poster: 'https://image.tmdb.org/t/p/w500/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg',
-    banner: 'https://image.tmdb.org/t/p/w1280/xOMo8BRK7PfcJv9JCnx7s5hj0PX.jpg',
+  'As Novas Desventuras de Cliff Booth': {
+    poster: 'https://actionewz.com/images/articles/banners/the-further-mis-adventures-of-cliff-booth-official-trailer-reveals-first-look-at-brad-pitt-sequel-ab7053.jpg',
+    banner: 'https://actionewz.com/images/articles/banners/the-further-mis-adventures-of-cliff-booth-official-trailer-reveals-first-look-at-brad-pitt-sequel-ab7053.jpg',
   },
-  'Oppenheimer': {
-    poster: 'https://image.tmdb.org/t/p/w500/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg',
+  'Duna: Parte Três': {
+    poster: 'https://www.impawards.com/2026/posters/dune_part_three.jpg',
+    banner: 'https://www.impawards.com/2026/posters/dune_part_three.jpg',
   },
-  'Batman': {
-    poster: 'https://image.tmdb.org/t/p/w500/74xTEgt7R36Fpooo50r9T25onhq.jpg',
-    banner: 'https://image.tmdb.org/t/p/w1280/b0PlSFdDwbyK0cf5RxwDpaOJQvQ.jpg',
+  'Vingadores: Doomsday': {
+    poster: 'https://lumiere-a.akamaihd.net/v1/images/g_movies_avengersdoomsday_poster_b81ec5ee.jpeg?region=0,0,1300,730',
+    banner: 'https://lumiere-a.akamaihd.net/v1/images/g_movies_avengersdoomsday_poster_b81ec5ee.jpeg?region=0,0,1300,730',
+  },
+  'Jumanji: Open World': {
+    poster: 'https://www.sonypictures.com/sites/default/files/styles/max_860x460/public/title-key-art/jumanjiopenworld_onesheet_1400x2100.jpg?itok=LhCaGOKF',
+    banner: 'https://www.sonypictures.com/sites/default/files/styles/max_860x460/public/title-key-art/jumanjiopenworld_onesheet_1400x2100.jpg?itok=LhCaGOKF',
+  },
+  'A Odisseia': {
+    poster: 'https://dx35vtwkllhj9.cloudfront.net/universalstudios/the-odyssey/images/regions/ca/onesheet.jpg',
+    banner: 'https://dx35vtwkllhj9.cloudfront.net/universalstudios/the-odyssey/images/regions/ca/onesheet.jpg',
   },
   'Homem-Aranha: Através do Aranhaverso': {
     poster: 'https://image.tmdb.org/t/p/w500/8Vt6mWEReuy4Of61Lnj5Xj704m8.jpg',
+    banner: null,
   },
   'Divertida Mente 2': {
     poster: 'https://image.tmdb.org/t/p/w500/vpnVM9B6NMmQpWeZvzLvDESb2QY.jpg',
-  },
-  'Barbie': {
-    poster: 'https://image.tmdb.org/t/p/w500/iuFNMS8U5cb6xfzi51Dbkovj7vM.jpg',
+    banner: 'https://image.tmdb.org/t/p/w1280/p5ozvmdgsmbWe0H8Xk7Rc8SCwAB.jpg',
   },
   'Avatar: O Caminho da Água': {
     poster: 'https://image.tmdb.org/t/p/w500/t6HIqrRAclMCA60NsSmeqe9RmNV.jpg',
-  },
+    banner: 'https://image.tmdb.org/t/p/w1280/s16H6tpK2utvwDtzZ8Qy4qm5Emw.jpg',
+  }
 };
+
+const estreias = {
+  'As Novas Desventuras de Cliff Booth': '2026-11-25',
+  'Duna: Parte Três': '2026-12-16',
+  'Vingadores: Doomsday': '2026-12-16',
+  'Jumanji: Open World': '2026-12-24',
+};
+
+export function estaEmBreve(filme) {
+  const estreia = filme && estreias[filme.titulo];
+  if (!estreia) return false;
+  const hoje = new Date();
+  const dataLocal = [hoje.getFullYear(), String(hoje.getMonth() + 1).padStart(2, '0'), String(hoje.getDate()).padStart(2, '0')].join('-');
+  return dataLocal < estreia;
+}
 
 export function imagemFilme(filme, tipo = 'poster') {
   if (!filme) return null;
-  const cadastrada = filmes[filme.titulo];
-
-  if (tipo === 'banner') {
+  const cadastrada = imagens[filme.titulo];
+  if (tipo === 'banner')
     return cadastrada?.banner || cadastrada?.poster || filme.bannerUrl || filme.posterUrl || null;
-  }
-
   return cadastrada?.poster || filme.posterUrl || null;
 }

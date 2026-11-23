@@ -4,7 +4,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import Entrada from './Entrada';
 import { cores, serifa } from '../tema';
 import { duracao, nativo } from '../utils';
-import { imagemFilme } from '../imagensFilmes';
+import { imagemFilme, estaEmBreve } from '../imagensFilmes';
 
 export default function Poster({ filme, largura, atraso = 0, aoPressionar }) {
   const escala = useRef(new Animated.Value(1)).current;
@@ -56,7 +56,9 @@ export default function Poster({ filme, largura, atraso = 0, aoPressionar }) {
           <View style={estilos.topo}>
             <Text style={estilos.genero}>{filme.genero.toUpperCase()}</Text>
             <View style={estilos.nota}>
-              <Text style={estilos.notaTexto}>★ {Number(filme.nota).toFixed(1)}</Text>
+              <Text style={estilos.notaTexto}>
+                {estaEmBreve(filme) ? 'EM BREVE' : Number(filme.nota) > 0 ? `★ ${Number(filme.nota).toFixed(1)}` : filme.ano}
+              </Text>
             </View>
           </View>
 
@@ -64,7 +66,7 @@ export default function Poster({ filme, largura, atraso = 0, aoPressionar }) {
             <Text style={[estilos.titulo, { fontSize: tamanhoTitulo, lineHeight: tamanhoTitulo * 1.15 }]} numberOfLines={3}>
               {filme.titulo}
             </Text>
-            <Text style={estilos.meta}>{duracao(filme.duracaoMin)}</Text>
+            <Text style={estilos.meta}>{filme.duracaoMin > 0 ? duracao(filme.duracaoMin) : 'Duração a definir'}</Text>
           </View>
         </Animated.View>
       </Pressable>

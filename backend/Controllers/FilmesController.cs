@@ -17,7 +17,7 @@ public class FilmesController(CinemaContext db) : ControllerBase
         if (!string.IsNullOrWhiteSpace(genero))
             consulta = consulta.Where(f => f.Genero == genero);
 
-        return Ok(await consulta.OrderByDescending(f => f.Nota).ToListAsync());
+        return Ok(await consulta.OrderByDescending(f => f.Ano).ThenByDescending(f => f.Id).ToListAsync());
     }
 
     [HttpGet("{id:int}")]

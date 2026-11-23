@@ -21,7 +21,7 @@ database/     Scripts SQL
 
 ### Banco de dados
 
-Para uma instalação nova, execute `database/cinema-hospedagem.sql` no banco MySQL selecionado. O script `database/ATUALIZAR-BANCO-FILMES-REAIS.sql` é destinado a atualizar uma instalação anterior; não execute o script de instalação inicial sobre um banco com dados existentes.
+Para uma instalação nova, execute `database/cinema-hospedagem.sql` no banco MySQL selecionado. Para atualizar o catálogo do banco já publicado, execute `database/ATUALIZAR-CATALOGO-2026.sql`. Não execute o script de instalação inicial sobre um banco com dados existentes.
 
 ### API
 
@@ -67,6 +67,6 @@ A saída fica em `app/dist`.
 
 ## Observações
 
-Os horários e valores cadastrados no banco são dados de teste e não representam a programação comercial de um cinema. Os pôsteres são carregados de `image.tmdb.org`. As imagens e marcas dos filmes pertencem aos respectivos titulares.
+Os horários e valores cadastrados no banco são dados de teste e não representam a programação comercial de um cinema. Lançamentos futuros aparecem como Em breve, sem sessões criadas antecipadamente. As imagens promocionais são servidas por distribuidores, veículos de cinema e TMDB; os direitos pertencem aos respectivos titulares.
 
 This product uses the TMDB API but is not endorsed or certified by TMDB.
