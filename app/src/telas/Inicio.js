@@ -9,7 +9,7 @@ import Entrada from '../componentes/Entrada';
 import Toque from '../componentes/Toque';
 import { cores, serifa } from '../tema';
 import { duracao } from '../utils';
-import { imagemFilme } from '../imagensFilmes';
+import { imagemFilme, estaEmBreve } from '../imagensFilmes';
 
 export default function Inicio() {
   const { navegar } = useApp();
@@ -34,7 +34,7 @@ export default function Inicio() {
 
   const generos = useMemo(() => ['Todos', ...new Set(filmes.map((f) => f.genero))], [filmes]);
   const lista = genero === 'Todos' ? filmes : filmes.filter((f) => f.genero === genero);
-  const destaque = filmes.find((f) => imagemFilme(f, 'banner')) || filmes[0];
+  const destaque = filmes.find((f) => f.titulo === 'Eu Sou o Rocky') || filmes.find((f) => imagemFilme(f, 'banner')) || filmes[0];
 
   const largo = width >= 800;
   const colunas = width >= 1100 ? 5 : width >= 800 ? 4 : width >= 560 ? 3 : 2;
@@ -87,18 +87,18 @@ export default function Inicio() {
                 style={StyleSheet.absoluteFill}
               />
               <View style={[estilos.heroTexto, { maxWidth: largo ? 560 : '100%' }]}>
-                <Text style={estilos.heroEtiqueta}>EM DESTAQUE</Text>
+                <Text style={estilos.heroEtiqueta}>{estaEmBreve(destaque) ? 'EM BREVE' : 'EM DESTAQUE'}</Text>
                 <Text style={[estilos.heroTitulo, { fontSize: largo ? 52 : 36, lineHeight: largo ? 58 : 40 }]}>
                   {destaque.titulo}
                 </Text>
                 <Text style={estilos.heroMeta}>
-                  {destaque.genero} · {duracao(destaque.duracaoMin)} · {destaque.classificacao === 'L' ? 'Livre' : `${destaque.classificacao} anos`}
+                  {destaque.genero} · {destaque.duracaoMin ? duracao(destaque.duracaoMin) : 'Duração a definir'} · {destaque.classificacao === 'A' ? 'Classificação a definir' : destaque.classificacao === 'L' ? 'Livre' : `${destaque.classificacao} anos`}
                 </Text>
                 <Text style={estilos.heroSinopse} numberOfLines={3}>
                   {destaque.sinopse}
                 </Text>
                 <Botao
-                  titulo="Comprar ingresso"
+                  titulo={estaEmBreve(destaque) ? 'Ver detalhes' : 'Comprar ingresso'}
                   aoPressionar={() => navegar('Filme', { id: destaque.id })}
                   style={{ alignSelf: 'flex-start', marginTop: 8 }}
                 />
@@ -132,7 +132,6 @@ export default function Inicio() {
             />
           ))}
         </View>
-        <Text style={estilos.aviso}>Seleção de filmes reais · Sessões e preços demonstrativos. Imagens: TMDB.</Text>
       </View>
     </ScrollView>
   );
@@ -165,5 +164,4 @@ const estilos = StyleSheet.create({
   chipTexto: { color: cores.suave, fontSize: 13, fontWeight: '600' },
   chipTextoAtivo: { color: cores.ouroEscuro },
   grade: { flexDirection: 'row', flexWrap: 'wrap' },
-  aviso: { color: cores.suave, fontSize: 11, marginTop: 28, opacity: 0.8 },
 });
