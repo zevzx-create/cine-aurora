@@ -1,8 +1,3 @@
-/**
- * Pôsteres reais com URLs verificadas do TMDB.
- * Fallback local de metadados: não depende de atualizar a API para exibir imagens.
- * Imagens e marcas pertencem aos respectivos titulares.
- */
 const filmes = {
   'Interstellar': {
     poster: 'https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg',
@@ -33,7 +28,6 @@ const filmes = {
   },
 };
 
-/** Retorna sempre URLs conhecidas para os filmes do catálogo, com suporte a filmes futuros. */
 export function imagemFilme(filme, tipo = 'poster') {
   if (!filme) return null;
   const cadastrada = filmes[filme.titulo];
