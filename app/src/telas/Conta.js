@@ -60,6 +60,9 @@ export default function Conta() {
         <Text style={estilos.rotulo}>E-MAIL</Text>
         <Text style={estilos.dado}>{usuario.email}</Text>
 
+        {usuario.isAdmin && (
+          <Botao titulo="Abrir dashboard administrativa" aoPressionar={() => raiz('Dashboard')} style={estilos.sair} />
+        )}
         <Botao titulo="Sair da conta" tipo="contorno" aoPressionar={sair} style={estilos.sair} />
 
         <View style={estilos.linha} />
