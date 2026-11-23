@@ -1,42 +1,72 @@
-# Cine Aura — filmes reais e pôsteres
+# Cine Aura
 
-**Nome público: Cine Aura.** Sistema demonstrativo de venda de ingressos: React Native + Expo, API em C#/.NET 8 e banco MySQL.
+Aplicação de cinema com catálogo de filmes, autenticação de usuários, sessões e reservas de assentos.
 
-## ATUALIZAÇÃO NO SEU SITE PUBLICADO
+## Tecnologias
 
-**Antes de mesclar esta atualização no GitHub:**
+- **Frontend:** React Native, Expo e React Native Web
+- **Backend:** ASP.NET Core (.NET 8), C# e Entity Framework Core
+- **Banco de dados:** MySQL 8
+- **Hospedagem:** Railway (API e banco) e Netlify (frontend)
 
-1. Conecte-se ao banco Railway pelo MySQL Workbench e dê dois cliques no schema `railway`.
-2. Abra `database/ATUALIZAR-BANCO-FILMES-REAIS.sql` em **File > Open SQL Script**.
-3. Execute o arquivo inteiro clicando no ícone do raio. O SELECT final deve mostrar oito filmes reais.
-4. Só depois mescle o pull request `filmes-reais-e-posters` para `main`.
-5. Railway e Netlify receberão os arquivos novos automaticamente se os deploys automáticos estiverem habilitados.
-6. Confira a API em `https://cine-aurora-production.up.railway.app/api/filmes` e o site em `https://cine-aurorazz.netlify.app/`.
+## Estrutura
 
-**Não execute novamente o arquivo `cinema-hospedagem.sql` no banco existente**, pois ele é de instalação inicial. O script `ATUALIZAR-BANCO-FILMES-REAIS.sql` mantém usuários, pedidos, ingressos e as sessões antigas para preservar históricos.
+```text
+app/          Aplicação Expo
+backend/      API ASP.NET Core
+database/     Scripts SQL
+```
 
-### Arquivos importantes
-- `database/ATUALIZAR-BANCO-FILMES-REAIS.sql` — atualização segura do MySQL existente.
-- `database/cinema.sql` — instalação de um banco novo local (apaga o banco `cinema`).
-- `database/cinema-hospedagem.sql` — instalação em banco novo hospedado.
-- `backend/` — API C# (.NET 8, ASP.NET Core e JWT).
-- `app/` — React Native + Expo para web e celular.
+## Configuração
 
-### Observações
-- Os oito títulos são filmes reais. As notas, sessões e preços são **ilustrativos** e não representam a programação oficial de cinemas.
-- Imagens carregadas de `image.tmdb.org` e exibidas com fallback de cor.
-- As chaves do Railway devem permanecer apenas nas variáveis de ambiente.
+### Banco de dados
 
-Crédito: This product uses the TMDB API but is not endorsed or certified by TMDB.
-Imagens e marcas dos filmes pertencem aos respectivos titulares.
+Para uma instalação nova, execute `database/cinema-hospedagem.sql` no banco MySQL selecionado. O script `database/ATUALIZAR-BANCO-FILMES-REAIS.sql` é destinado a atualizar uma instalação anterior; não execute o script de instalação inicial sobre um banco com dados existentes.
 
-## Minha conta e exclusão
-- Usuários autenticados acessam **Minha conta** no cabeçalho.
-- **Excluir conta** exige a senha e uma confirmação explícita.
-- A API `DELETE /api/auth/conta` utiliza o JWT para identificar o titular e verifica a senha BCrypt.
-- A exclusão é definitiva: remove o usuário, seus pedidos e ingressos vinculados, em transação. Filmes, sessões e pedidos de outras contas são preservados.
-- Após a exclusão, o aplicativo limpa a sessão local e retorna à página inicial.
-- Não é necessária migração adicional no MySQL.
+### API
 
-## Nome público e serviços
-O nome mostrado no aplicativo e os metadados do Expo são **Cine Aura**. Os identificadores técnicos existentes (namespace `Cinema.Api`, schema MySQL `railway`, nomes internos e URLs já implantadas) são mantidos para preservar as conexões. Para trocar o endereço `cine-aurorazz.netlify.app` ou nomes de serviços no Railway/GitHub, ajuste-os nos respectivos painéis e confira os vínculos de deploy.
+Na pasta `backend`, configure as variáveis de ambiente:
+
+| Variável | Descrição |
+| --- | --- |
+| `ConnectionStrings__Cinema` | String de conexão com o MySQL |
+| `Jwt__Chave` | Chave secreta usada na assinatura dos tokens JWT |
+
+Inicie a API localmente com:
+
+```bash
+cd backend
+dotnet run
+```
+
+### Frontend
+
+Na pasta `app`, configure `EXPO_PUBLIC_API_URL` com o endereço base da API (sem `/api` no final).
+
+```bash
+cd app
+npm install
+npx expo start --web
+```
+
+Para gerar os arquivos estáticos do site:
+
+```bash
+npx expo export --platform web
+```
+
+A saída fica em `app/dist`.
+
+## Funcionalidades
+
+- Catálogo com filtros por gênero e páginas de detalhes
+- Cadastro e login com senha protegida por hash
+- Consulta de sessões e seleção de assentos
+- Registro e consulta de pedidos e ingressos
+- Exclusão de conta autenticada, com confirmação de senha
+
+## Observações
+
+Os horários e valores cadastrados no banco são dados de teste e não representam a programação comercial de um cinema. Os pôsteres são carregados de `image.tmdb.org`. As imagens e marcas dos filmes pertencem aos respectivos titulares.
+
+This product uses the TMDB API but is not endorsed or certified by TMDB.
