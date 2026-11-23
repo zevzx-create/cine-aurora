@@ -10,7 +10,7 @@ namespace Cinema.Api.Controllers;
 
 [ApiController]
 [Route("api/auth")]
-public class AuthController(CinemaContext db, TokenService tokens, ILogger<AuthController> logger) : ControllerBase
+public class AuthController(CinemaContext db, TokenService tokens, IConfiguration configuracao, ILogger<AuthController> logger) : ControllerBase
 {
     [HttpPost("registrar")]
     public async Task<IActionResult> Registrar(Registro dados)
@@ -96,5 +96,5 @@ public class AuthController(CinemaContext db, TokenService tokens, ILogger<AuthC
     }
 
     private AuthResposta Resposta(Usuario usuario) =>
-        new(tokens.Gerar(usuario), new UsuarioDto(usuario.Id, usuario.Nome, usuario.Email));
+        new(tokens.Gerar(usuario), new UsuarioDto(usuario.Id, usuario.Nome, usuario.Email, AdminAccess.Permitido(usuario.Email, configuracao)));
 }
