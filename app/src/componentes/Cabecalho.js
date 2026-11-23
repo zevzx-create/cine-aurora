@@ -34,6 +34,11 @@ export default function Cabecalho() {
         <Toque aoPressionar={abrirIngressos} style={estilos.link}>
           <Text style={[estilos.linkTexto, topo === 'Pedidos' && estilos.linkAtivo]}>Ingressos</Text>
         </Toque>
+        {usuario?.isAdmin && (
+          <Toque aoPressionar={() => raiz('Dashboard')} style={estilos.link}>
+            <Text style={[estilos.linkTexto, topo === 'Dashboard' && estilos.linkAtivo]}>Painel</Text>
+          </Toque>
+        )}
         {usuario ? (
           <Toque aoPressionar={() => navegar('Conta')} style={estilos.conta}>
             <Text style={estilos.contaTexto}>{usuario.nome.split(' ')[0]} · Minha conta</Text>
