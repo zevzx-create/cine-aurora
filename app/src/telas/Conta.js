@@ -30,7 +30,11 @@ export default function Conta() {
     setExcluindo(true);
     try {
       await excluirConta(senha);
-      await sair();
+      try {
+        await sair();
+      } catch {
+        raiz('Inicio');
+      }
     } catch (e) {
       setErro(e.message || 'Não foi possível excluir sua conta.');
     } finally {

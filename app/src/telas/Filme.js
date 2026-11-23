@@ -100,8 +100,7 @@ export default function Filme({ id }) {
           <Text style={estilos.sinopse}>{filme.sinopse}</Text>
         </Entrada>
 
-        <Text style={estilos.secao}>Sessões demonstrativas</Text>
-        <Text style={estilos.notaDemo}>Datas e preços ilustrativos para testar o sistema. Não são sessões reais.</Text>
+        <Text style={estilos.secao}>Sessões</Text>
 
         {dias.length === 0 ? (
           <Text style={estilos.vazio}>Nenhuma sessão disponível no momento.</Text>
@@ -162,7 +161,6 @@ const estilos = StyleSheet.create({
   sinopse: { color: cores.suave, fontSize: 16, lineHeight: 25, marginTop: 22, maxWidth: 720 },
   secao: { color: cores.texto, fontFamily: serifa, fontSize: 26, fontWeight: '700', marginTop: 36, marginBottom: 14 },
   vazio: { color: cores.suave, fontSize: 15 },
-  notaDemo: { color: cores.suave, fontSize: 12, marginBottom: 14 },
   dias: { gap: 10, paddingBottom: 18 },
   dia: {
     width: 64,

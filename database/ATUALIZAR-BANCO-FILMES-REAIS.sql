@@ -1,6 +1,3 @@
--- CINE AURORA: ATUALIZE O BANCO NO MYSQL WORKBENCH ANTES DE PUBLICAR A API NOVA
--- Selecione o schema 'railway'. Este script preserva usuários, pedidos e ingressos.
--- NÃO execute cinema-hospedagem.sql novamente no banco existente.
 
 SET @add_col = IF(EXISTS(
   SELECT 1 FROM information_schema.COLUMNS
@@ -53,7 +50,6 @@ SET f.sinopse=n.sinopse, f.genero=n.genero, f.duracao_min=n.duracao_min,
     f.classificacao=n.classificacao, f.nota=n.nota, f.cor_primaria=n.cor_primaria,
     f.cor_secundaria=n.cor_secundaria, f.em_cartaz=1, f.poster_url=n.poster_url, f.banner_url=n.banner_url;
 
--- Sessões e preços de DEMONSTRAÇÃO: não representam horários de cinemas reais.
 INSERT INTO sessoes (filme_id, sala_id, inicio, preco, formato)
 SELECT f.id, 1 + MOD(f.id + h.ordem, 3),
        TIMESTAMP(DATE_ADD(CURDATE(), INTERVAL dias.dia DAY), h.horario),
