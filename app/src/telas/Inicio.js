@@ -9,6 +9,7 @@ import Entrada from '../componentes/Entrada';
 import Toque from '../componentes/Toque';
 import { cores, serifa } from '../tema';
 import { duracao } from '../utils';
+import { imagemFilme } from '../imagensFilmes';
 
 export default function Inicio() {
   const { navegar } = useApp();
@@ -33,7 +34,7 @@ export default function Inicio() {
 
   const generos = useMemo(() => ['Todos', ...new Set(filmes.map((f) => f.genero))], [filmes]);
   const lista = genero === 'Todos' ? filmes : filmes.filter((f) => f.genero === genero);
-  const destaque = filmes.find((f) => f.bannerUrl) || filmes[0];
+  const destaque = filmes.find((f) => imagemFilme(f, 'banner')) || filmes[0];
 
   const largo = width >= 800;
   const colunas = width >= 1100 ? 5 : width >= 800 ? 4 : width >= 560 ? 3 : 2;
@@ -71,11 +72,11 @@ export default function Inicio() {
                 end={{ x: 1, y: 1 }}
                 style={StyleSheet.absoluteFill}
               />
-              {(destaque.bannerUrl || destaque.posterUrl) && (
+              {imagemFilme(destaque, 'banner') && (
                 <Image
-                  source={{ uri: destaque.bannerUrl || destaque.posterUrl }}
+                  source={{ uri: imagemFilme(destaque, 'banner') }}
                   resizeMode="cover"
-                  style={StyleSheet.absoluteFill}
+                  style={estilos.imagemFundo}
                   accessibilityLabel={`Imagem do filme ${destaque.titulo}`}
                 />
               )}
@@ -144,6 +145,7 @@ const estilos = StyleSheet.create({
   rolagem: { paddingBottom: 48, alignItems: 'center' },
   coluna: { width: '100%', paddingHorizontal: 20, paddingTop: 20 },
   hero: { borderRadius: 24, overflow: 'hidden', justifyContent: 'flex-end', padding: 28 },
+  imagemFundo: { position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' },
   heroTexto: { gap: 10 },
   heroEtiqueta: { color: cores.ouro, fontSize: 11, fontWeight: '800', letterSpacing: 3 },
   heroTitulo: { color: cores.texto, fontFamily: serifa, fontWeight: '700' },
