@@ -10,7 +10,7 @@ namespace Cinema.Api.Controllers;
 
 [ApiController]
 [Route("api/auth")]
-public class AuthController(CinemaContext db, TokenService tokens) : ControllerBase
+public class AuthController(CinemaContext db, TokenService tokens, ILogger<AuthController> logger) : ControllerBase
 {
     [HttpPost("registrar")]
     public async Task<IActionResult> Registrar(Registro dados)
@@ -55,10 +55,9 @@ public class AuthController(CinemaContext db, TokenService tokens) : ControllerB
         return Ok(Resposta(usuario));
     }
 
-    // Exclui apenas a conta vinculada ao token autenticado, após confirmação de senha.
-    // As exclusões são feitas em uma transação para não deixar dados órfãos.
     [Authorize]
     [HttpDelete("conta")]
+    [HttpPost("excluir-conta")]
     public async Task<IActionResult> ExcluirConta(ExcluirContaDados dados)
     {
         var identificador = User.FindFirst("id")?.Value;
@@ -70,25 +69,30 @@ public class AuthController(CinemaContext db, TokenService tokens) : ControllerB
 
         var usuario = await db.Usuarios.FirstOrDefaultAsync(u => u.Id == usuarioId);
         if (usuario is null)
-            return Unauthorized(new { erro = "Conta não encontrada." });
+            return Unauthorized(new { erro = "Conta não encontrada. Entre novamente." });
 
         if (!BCrypt.Net.BCrypt.Verify(dados.Senha, usuario.SenhaHash))
             return BadRequest(new { erro = "Senha incorreta. Sua conta não foi excluída." });
 
         await using var transacao = await db.Database.BeginTransactionAsync();
-        var pedidosIds = await db.Pedidos
-            .Where(p => p.UsuarioId == usuarioId)
-            .Select(p => p.Id)
-            .ToListAsync();
+        try
+        {
+            await db.Database.ExecuteSqlInterpolatedAsync(
+                $"DELETE FROM ingressos WHERE pedido_id IN (SELECT id FROM pedidos WHERE usuario_id = {usuarioId})");
+            await db.Database.ExecuteSqlInterpolatedAsync(
+                $"DELETE FROM pedidos WHERE usuario_id = {usuarioId}");
+            await db.Database.ExecuteSqlInterpolatedAsync(
+                $"DELETE FROM usuarios WHERE id = {usuarioId}");
 
-        if (pedidosIds.Count > 0)
-            await db.Ingressos.Where(i => pedidosIds.Contains(i.PedidoId)).ExecuteDeleteAsync();
-
-        await db.Pedidos.Where(p => p.UsuarioId == usuarioId).ExecuteDeleteAsync();
-        await db.Usuarios.Where(u => u.Id == usuarioId).ExecuteDeleteAsync();
-        await transacao.CommitAsync();
-
-        return NoContent();
+            await transacao.CommitAsync();
+            return Ok(new { mensagem = "Conta excluída com sucesso." });
+        }
+        catch (Exception ex)
+        {
+            await transacao.RollbackAsync();
+            logger.LogError(ex, "Falha ao excluir conta: {UsuarioId}", usuarioId);
+            return StatusCode(500, new { erro = "Não foi possível excluir sua conta. Consulte os logs no Railway." });
+        }
     }
 
     private AuthResposta Resposta(Usuario usuario) =>
