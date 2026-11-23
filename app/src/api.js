@@ -40,3 +40,4 @@ export const login = (corpo) => chamar('/api/auth/entrar', { metodo: 'POST', cor
 export const cadastrar = (corpo) => chamar('/api/auth/registrar', { metodo: 'POST', corpo });
 export const criarPedido = (corpo) => chamar('/api/pedidos', { metodo: 'POST', corpo });
 export const meusPedidos = () => chamar('/api/pedidos/meus');
+export const excluirConta = (senha) => chamar('/api/auth/conta', { metodo: 'DELETE', corpo: { senha } });
