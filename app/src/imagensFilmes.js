@@ -4,12 +4,12 @@ const imagens = {
     banner: 'https://ingresso-a.akamaihd.net/prd/img/movie/eu-sou-o-rocky/c5f58ee4-13d7-4e64-8659-4e0cb7952cfc.webp',
   },
   'As Novas Desventuras de Cliff Booth': {
-    poster: 'https://actionewz.com/images/articles/banners/the-further-mis-adventures-of-cliff-booth-official-trailer-reveals-first-look-at-brad-pitt-sequel-ab7053.jpg',
-    banner: 'https://actionewz.com/images/articles/banners/the-further-mis-adventures-of-cliff-booth-official-trailer-reveals-first-look-at-brad-pitt-sequel-ab7053.jpg',
+    poster: 'https://raw.githubusercontent.com/zevzx-create/cine-aurora/main/app/assets/posters/cliff-booth.jpg',
+    banner: 'https://raw.githubusercontent.com/zevzx-create/cine-aurora/main/app/assets/posters/cliff-booth.jpg',
   },
   'Duna: Parte Três': {
-    poster: 'https://www.impawards.com/2026/posters/dune_part_three.jpg',
-    banner: 'https://www.impawards.com/2026/posters/dune_part_three.jpg',
+    poster: 'https://image.tmdb.org/t/p/original/gp1MVNsRyH76PHlJVhRk6PHylDY.jpg',
+    banner: 'https://image.tmdb.org/t/p/original/gp1MVNsRyH76PHlJVhRk6PHylDY.jpg',
   },
   'Vingadores: Doomsday': {
     poster: 'https://lumiere-a.akamaihd.net/v1/images/g_movies_avengersdoomsday_poster_b81ec5ee.jpeg?region=0,0,1300,730',
