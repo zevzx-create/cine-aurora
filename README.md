@@ -66,6 +66,7 @@ A saída fica em `app/dist`.
 - Registro e consulta de pedidos e ingressos
 - Exclusão de conta autenticada, com confirmação de senha
 - Dashboard administrativa privada com indicadores, ranking de filmes e últimos pedidos
+- CRUD administrativo de filmes e sessões, com edição de preços e persistência no MySQL
 
 ## Observações
 
@@ -91,3 +92,24 @@ A tela **Dashboard** mostra, diretamente do MySQL:
 6. Faça uma compra de teste e clique em **Atualizar dados** para ver os indicadores mudarem.
 
 A permissão é verificada **no backend e no banco**, não apenas escondendo links do frontend. Os números são dados demonstrativos: não há processador de pagamento real. Não é necessário executar novas migrações SQL no banco existente.
+
+## CRUD do administrador
+
+Em **Dashboard → Gerenciar filmes e sessões**, a conta autorizada por `Admin__Emails` pode:
+
+- Criar filmes, editar título, sinopse, gênero, ano, nota, classificação, duração, cores, cartaz, banner e situação do catálogo.
+- Retirar filmes do catálogo e reativá-los. A retirada é **lógica** (`em_cartaz=0`), preservando sessões, pedidos e ingressos existentes.
+- Criar sessões, selecionar filme, sala, data/hora, formato e preço do ingresso (preço individual por sessão).
+- Editar ou excluir sessões sem pedidos. Sessões com vendas não podem ser editadas nem excluídas, para preservar o histórico.
+
+As alterações são enviadas à API C# por `GET/POST/PUT/DELETE /api/admin/filmes` e `/api/admin/sessoes` (e `GET /api/admin/salas`). Todos os endpoints administrativos exigem token JWT e conferem a permissão **no banco e no servidor**. O SQL usa as tabelas existentes, sem nova migração.
+
+Para demonstrar no MySQL Workbench após cadastrar ou editar:
+
+```sql
+USE railway;
+SELECT id, titulo, ano, em_cartaz, poster_url FROM filmes ORDER BY id DESC;
+SELECT id, filme_id, sala_id, inicio, preco, formato FROM sessoes ORDER BY id DESC;
+```
+
+Não existe cobrança real por cartão; `preco` é o valor cobrado pelas compras simuladas de uma determinada sessão. Para mudar o preço de sessões existentes, edite individualmente uma sessão sem pedidos.
