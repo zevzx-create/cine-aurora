@@ -23,18 +23,18 @@ public class FilmesController(CinemaContext db) : ControllerBase
     [HttpGet("{id:int}")]
     public async Task<IActionResult> Obter(int id)
     {
-        var filme = await db.Filmes.AsNoTracking().FirstOrDefaultAsync(f => f.Id == id);
+        var filme = await db.Filmes.AsNoTracking().FirstOrDefaultAsync(f => f.Id == id && f.EmCartaz);
         return filme is null ? NotFound(new { erro = "Filme não encontrado." }) : Ok(filme);
     }
 
     [HttpGet("{id:int}/sessoes")]
     public async Task<IActionResult> Sessoes(int id)
     {
-        var agora = DateTime.Now;
+        var agora = DateTime.UtcNow.AddHours(-3);
 
         var sessoes = await db.Sessoes
             .AsNoTracking()
-            .Where(s => s.FilmeId == id && s.Inicio > agora)
+            .Where(s => s.FilmeId == id && s.Filme.EmCartaz && s.Inicio > agora)
             .OrderBy(s => s.Inicio)
             .Select(s => new SessaoResumo(s.Id, s.Inicio, s.Preco, s.Formato, s.Sala.Nome))
             .ToListAsync();
