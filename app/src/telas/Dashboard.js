@@ -27,7 +27,7 @@ function Indicador({ titulo, valor, detalhe, largura }) {
 }
 
 export default function Dashboard() {
-  const { usuario, raiz } = useApp();
+  const { usuario, raiz, navegar } = useApp();
   const { width } = useWindowDimensions();
   const [dados, setDados] = useState(null);
   const [carregando, setCarregando] = useState(true);
@@ -93,6 +93,14 @@ export default function Dashboard() {
           <View style={estilos.atualizar}>
             <Botao titulo={carregando ? 'Atualizando...' : 'Atualizar dados'} aoPressionar={carregar} carregando={carregando} tipo="contorno" />
           </View>
+        </Entrada>
+
+        <Entrada style={estilos.gerenciar}>
+          <View style={{ flex: 1, gap: 6 }}>
+            <Text style={estilos.secaoTitulo}>Gerenciar cinema</Text>
+            <Text style={estilos.suave}>Cadastre filmes, edite o catálogo, crie sessões e altere preços no MySQL.</Text>
+          </View>
+          <Botao titulo="Gerenciar filmes e sessões" aoPressionar={() => navegar('GerenciarCatalogo')} />
         </Entrada>
 
         {!!erro && <Text style={estilos.aviso}>{erro} Os valores exibidos podem estar desatualizados.</Text>}
@@ -201,5 +209,6 @@ const estilos = StyleSheet.create({
   pedidoMeta: { color: cores.suave, fontSize: 12 },
   pedidoTotal: { color: cores.texto, fontWeight: '700', fontSize: 16 },
   vazio: { color: cores.suave, fontSize: 14, paddingVertical: 24, textAlign: 'center' },
+  gerenciar: { padding: 20, backgroundColor: cores.superficie, borderRadius: 16, borderWidth: 1, borderColor: cores.ouro, gap: 16, flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between' },
   rodape: { color: cores.suave, fontSize: 12, lineHeight: 19, textAlign: 'center', marginTop: 4 },
 });
