@@ -47,4 +47,13 @@ export const cadastrar = (corpo) => chamar('/api/auth/registrar', { metodo: 'POS
 export const criarPedido = (corpo) => chamar('/api/pedidos', { metodo: 'POST', corpo });
 export const meusPedidos = () => chamar('/api/pedidos/meus');
 export const resumoAdmin = () => chamar('/api/admin/resumo');
+export const listarFilmesAdmin = () => chamar('/api/admin/filmes');
+export const criarFilmeAdmin = (corpo) => chamar('/api/admin/filmes', { metodo: 'POST', corpo });
+export const editarFilmeAdmin = (id, corpo) => chamar(`/api/admin/filmes/${id}`, { metodo: 'PUT', corpo });
+export const removerFilmeAdmin = (id) => chamar(`/api/admin/filmes/${id}`, { metodo: 'DELETE' });
+export const listarSalasAdmin = () => chamar('/api/admin/salas');
+export const listarSessoesAdmin = (filmeId) => chamar(`/api/admin/sessoes?filmeId=${filmeId}`);
+export const criarSessaoAdmin = (corpo) => chamar('/api/admin/sessoes', { metodo: 'POST', corpo });
+export const editarSessaoAdmin = (id, corpo) => chamar(`/api/admin/sessoes/${id}`, { metodo: 'PUT', corpo });
+export const removerSessaoAdmin = (id) => chamar(`/api/admin/sessoes/${id}`, { metodo: 'DELETE' });
 export const excluirConta = (senha) => chamar('/api/auth/excluir-conta', { metodo: 'POST', corpo: { senha } });

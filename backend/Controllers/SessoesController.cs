@@ -16,7 +16,7 @@ public class SessoesController(CinemaContext db) : ControllerBase
             .AsNoTracking()
             .Include(s => s.Filme)
             .Include(s => s.Sala)
-            .FirstOrDefaultAsync(s => s.Id == id);
+            .FirstOrDefaultAsync(s => s.Id == id && s.Filme.EmCartaz);
 
         if (sessao is null)
             return NotFound(new { erro = "Sessão não encontrada." });
