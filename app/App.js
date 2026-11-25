@@ -14,8 +14,9 @@ import Confirmacao from './src/telas/Confirmacao';
 import Pedidos from './src/telas/Pedidos';
 import Conta from './src/telas/Conta';
 import Dashboard from './src/telas/Dashboard';
+import GerenciarCatalogo from './src/telas/GerenciarCatalogo';
 
-const telas = { Inicio, Filme, Assentos, Login, Confirmacao, Pedidos, Conta, Dashboard };
+const telas = { Inicio, Filme, Assentos, Login, Confirmacao, Pedidos, Conta, Dashboard, GerenciarCatalogo };
 const CHAVE_SESSAO = 'cine_aurora_sessao';
 
 const novaRota = (nome, params = {}) => ({ nome, params, chave: `${nome}-${Date.now()}-${Math.random()}` });
