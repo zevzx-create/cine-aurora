@@ -31,7 +31,10 @@ public class PedidosController(CinemaContext db) : ControllerBase
         if (sessao is null)
             return NotFound(new { erro = "Sessão não encontrada." });
 
-        if (sessao.Inicio <= DateTime.Now)
+        if (!sessao.Filme.EmCartaz)
+            return BadRequest(new { erro = "Este filme não está disponível para compra." });
+
+        if (sessao.Inicio <= DateTime.UtcNow.AddHours(-3))
             return BadRequest(new { erro = "Essa sessão já começou." });
 
         var escolhidos = new List<(string Fileira, int Numero)>();
