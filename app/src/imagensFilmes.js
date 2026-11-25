@@ -67,6 +67,6 @@ export function imagemFilme(filme, tipo = 'poster') {
   if (!filme) return null;
   const cadastrada = imagens[filme.titulo];
   if (tipo === 'banner')
-    return cadastrada?.banner || cadastrada?.poster || filme.bannerUrl || filme.posterUrl || null;
-  return cadastrada?.poster || filme.posterUrl || null;
+    return filme.bannerUrl || filme.posterUrl || cadastrada?.banner || cadastrada?.poster || null;
+  return filme.posterUrl || cadastrada?.poster || null;
 }
