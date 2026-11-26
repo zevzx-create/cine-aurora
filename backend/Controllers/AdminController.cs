@@ -17,7 +17,6 @@ public class AdminController(CinemaContext db, IConfiguration configuracao) : Co
         if (!int.TryParse(User.FindFirst("id")?.Value, out var usuarioId))
             return Unauthorized(new { erro = "Faça login para acessar a dashboard." });
 
-        // Autorização feita na API e conferida no banco, não apenas na interface.
         var email = await db.Usuarios.AsNoTracking()
             .Where(u => u.Id == usuarioId)
             .Select(u => u.Email)
@@ -36,7 +35,6 @@ public class AdminController(CinemaContext db, IConfiguration configuracao) : Co
         var faturamento = await db.Pedidos.AsNoTracking()
             .SumAsync(p => (decimal?)p.Total) ?? 0m;
 
-        // Cada ingresso vale o preço da sessão a que pertence.
         var maisVendidos = await (
             from ingresso in db.Ingressos.AsNoTracking()
             join sessao in db.Sessoes.AsNoTracking() on ingresso.SessaoId equals sessao.Id
