@@ -2,7 +2,6 @@ namespace Cinema.Api.Services;
 
 public static class AdminAccess
 {
-    // Lista configurada somente no servidor: Admin__Emails=email@exemplo.com
     public static bool Permitido(string? email, IConfiguration configuracao)
     {
         if (string.IsNullOrWhiteSpace(email)) return false;

@@ -10,7 +10,6 @@ import { moeda } from '../utils';
 const inteiro = (n) => Number(n || 0).toLocaleString('pt-BR');
 const dataPedido = (valor) => {
   if (!valor) return '—';
-  // Mantém o horário registrado na base, evitando conversões implícitas no navegador.
   const partes = String(valor).split('T');
   const dia = partes[0]?.split('-').reverse().join('/') || '';
   return dia + (partes[1] ? ' · ' + partes[1].slice(0, 5) : '');

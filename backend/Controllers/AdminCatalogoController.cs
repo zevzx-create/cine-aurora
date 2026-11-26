@@ -135,7 +135,6 @@ public class AdminCatalogoController(CinemaContext db, IConfiguration configurac
         var filme = await db.Filmes.FindAsync(id);
         if (filme is null) return NotFound(new { erro = "Filme não encontrado." });
 
-        // Exclusão lógica: pedidos/ingressos históricos e suas relações não são apagados.
         filme.EmCartaz = false;
         await db.SaveChangesAsync();
         return Ok(new { mensagem = "Filme retirado do catálogo. O histórico foi preservado.", filme.Id });
